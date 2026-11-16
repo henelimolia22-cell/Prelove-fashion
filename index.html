@@ -431,9 +431,11 @@ ${cta()}
    <li class="cart__item"><a href="#/product/${p.handle}"><img src="${p.img}" alt=""></a><div><a href="#/product/${p.handle}" style="font-weight:600;text-decoration:none">${p.title}</a><p class="card__meta">Size ${p.size}</p><div class="price"><span class="price__now">${money(p.price)}</span></div></div>
    <div class="cart__line"><span class="cart__qty" style="padding:.5rem 0">Qty 1</span><button class="link cart__remove" onclick="removeBag('${p.handle}')">Remove</button><strong>${money(p.price)}</strong></div></li>`).join('')}</ul>
    <div class="cart__summary"><div class="cart__total"><span>Subtotal</span><span>${money(total)}</span></div><p class="cart__note">Taxes included where applicable. Shipping is calculated at checkout.</p>
-   <button class="btn btn--accent btn--block" onclick="checkout()">Checkout</button>
+   ${PAYPAL_CLIENT_ID ? `<div id="paypal-buttons" aria-label="Pay with PayPal"></div><p class="cart__note">Test mode: this store uses the PayPal sandbox, so no real money is charged.</p>` : `<button class="btn btn--accent btn--block" onclick="checkout()">Checkout</button>`}
    <p class="cart__note" style="display:flex;gap:.5rem;align-items:center;margin:0"><span style="width:20px;color:var(--primary)">${icon.box}</span>Ships in recycled, plastic-free packaging.</p></div></div></div>`;
  },
+
+ thanks: () => `<div class="container cart"><h1>Thank you for your order</h1><div class="empty"><p class="lead" style="margin-inline:auto">Your test order <strong>${lastOrder||''}</strong> went through. Your pieces will be packed in recycled, plastic-free packaging.</p><p class="cart__note">This was a PayPal sandbox payment, so no real money was charged.</p><a class="btn" href="#/shop">Keep shopping</a></div></div>`,
 
  sustainability: () => `
 <section class="section section--tight"><div class="container"><span class="eyebrow">Our promise</span><h1>Fashion without the footprint</h1><div class="lead"><p>Making a brand-new garment takes land, water, energy and labour. The most sustainable piece in your wardrobe is the one that already exists. That is the whole idea behind our store.</p></div></div></section>
@@ -453,9 +455,32 @@ ${how('How it works',[['Tell us what you have','Fill in the form below with a sh
 
 function toast(msg){ const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),3200); }
 function addBag(h){ if(!bag.includes(h)){ bag.push(h); const p=byHandle(h); gtag('event','add_to_cart',{currency:'NZD',value:p.price,items:[{item_id:p.sku,item_name:p.title,price:p.price,quantity:1}]}); } render(); toast('Added to your bag'); }
-// Paste your Stripe Payment Link (test mode) here to enable checkout:
-const CHECKOUT_URL = '';
-function checkout(){ const items=bag.map(byHandle); gtag('event','begin_checkout',{currency:'NZD',value:items.reduce((a,p)=>a+p.price,0),items:items.map(p=>({item_id:p.sku,item_name:p.title,price:p.price,quantity:1}))}); if(CHECKOUT_URL){ window.location.href=CHECKOUT_URL; } else { toast('Checkout not connected yet: add a Stripe Payment Link to CHECKOUT_URL.'); } }
+// PayPal sandbox Client ID (safe to be public; never put the Secret here):
+const PAYPAL_CLIENT_ID = '';
+let lastOrder = '', ppLoading = null;
+const bagItems = () => bag.map(byHandle);
+const bagTotal = () => bagItems().reduce((a,p)=>a+p.price,0);
+function loadPayPal(){
+  if(window.paypal) return Promise.resolve();
+  if(ppLoading) return ppLoading;
+  ppLoading = new Promise((ok,fail)=>{ const s=document.createElement('script'); s.src='https://www.paypal.com/sdk/js?client-id='+encodeURIComponent(PAYPAL_CLIENT_ID)+'&currency=NZD&intent=capture'; s.onload=ok; s.onerror=()=>{ppLoading=null;fail();}; document.head.appendChild(s); });
+  return ppLoading;
+}
+function mountPayPal(){
+  const box = document.getElementById('paypal-buttons');
+  if(!box || !PAYPAL_CLIENT_ID) return;
+  loadPayPal().then(()=>{
+    if(!document.getElementById('paypal-buttons')) return;
+    paypal.Buttons({
+      style:{layout:'vertical',shape:'pill',label:'pay'},
+      onClick:()=>{ gtag('event','begin_checkout',{currency:'NZD',value:bagTotal(),items:bagItems().map(p=>({item_id:p.sku,item_name:p.title,price:p.price,quantity:1}))}); },
+      createOrder:(d,a)=>a.order.create({purchase_units:[{description:'Thrice Loved order ('+bag.length+' pre-loved item'+(bag.length>1?'s':'')+')',amount:{currency_code:'NZD',value:bagTotal().toFixed(2)}}]}),
+      onApprove:(d,a)=>a.order.capture().then(o=>{ const items=bagItems(); gtag('event','purchase',{transaction_id:o.id,currency:'NZD',value:bagTotal(),items:items.map(p=>({item_id:p.sku,item_name:p.title,price:p.price,quantity:1}))}); lastOrder=o.id; bag=[]; go('thanks'); }),
+      onError:()=>toast('Payment could not be completed. Please try again.')
+    }).render('#paypal-buttons');
+  }).catch(()=>toast('Could not load PayPal. Check your connection or ad blocker.'));
+}
+function checkout(){ gtag('event','begin_checkout',{currency:'NZD',value:bagTotal(),items:bagItems().map(p=>({item_id:p.sku,item_name:p.title,price:p.price,quantity:1}))}); toast('Checkout not connected yet: add a PayPal sandbox Client ID.'); }
 function removeBag(h){ bag = bag.filter(x=>x!==h); render(); }
 
 let route = '', sortMode = 'new';
@@ -472,6 +497,7 @@ function render(){
   const v = view || 'home';
   const fn = views[v] || views.home;
   document.getElementById('app').innerHTML = header() + '<main>' + fn(arg ? decodeURIComponent(arg) : undefined) + '</main>' + footer();
+  if (v === 'bag') mountPayPal();
 }
 render(); track();
 </script></body></html>
