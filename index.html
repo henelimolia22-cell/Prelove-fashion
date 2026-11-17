@@ -2,6 +2,9 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Thrice Loved – pre-loved fashion</title>
+<meta name="description" content="Thrice Loved is an Auckland pre-loved fashion store. One-of-one pieces, honestly graded, packed in recycled, plastic-free packaging.">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#2f4a3a">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -300,6 +303,9 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .stack>*+*{margin-top:1rem}
 
 .preview-pill{position:fixed;left:12px;bottom:12px;z-index:90;background:#1B1B1B;color:#fff;font-size:.72rem;padding:.35rem .8rem;border-radius:999px;opacity:.85}
+.prose{max-width:760px}.prose h2{margin-top:2.2rem}.prose p,.prose li{line-height:1.7}.prose ul{padding-left:1.2rem;list-style:disc}.prose li{margin:.4rem 0}
+.ptable{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.95rem}.ptable th,.ptable td{text-align:left;vertical-align:top;padding:.7rem .8rem;border-bottom:1px solid rgba(0,0,0,.12)}.ptable th{font-weight:600;width:36%;font-size:.88rem}@media (max-width:600px){.ptable th,.ptable td{padding:.6rem .4rem;font-size:.85rem}}
+.notice{position:fixed;left:12px;right:12px;bottom:12px;z-index:90;max-width:560px;margin:0 auto;background:#fff;color:var(--ink,#1d1d1b);border:1px solid rgba(0,0,0,.15);border-radius:16px;padding:.9rem 1rem;display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;box-shadow:0 8px 30px rgba(0,0,0,.15);font-size:.9rem}.notice p{margin:0;flex:1 1 240px}.notice .btn{padding:.5rem 1rem}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--primary);color:#fff;padding:.8rem 1.2rem;border-radius:14px;z-index:95;max-width:92vw;font-size:.92rem;box-shadow:0 12px 30px rgba(0,0,0,.25)}
 button.link{background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
 </style><!-- Google Analytics 4: replace G-50FDK17DDC with your Measurement ID (GA > Admin > Data streams) -->
@@ -344,9 +350,9 @@ const footer = () => `
  <div><a class="logo" href="#/"><span class="logo__dot"></span><span>Thrice Loved</span></a><p class="footer__about">Pre-loved fashion from Auckland. Every piece is hand-picked, honestly graded and given a third life.</p></div>
  <div><h4>Shop</h4><ul><li><a href="#/shop">Shop all</a></li><li><a href="#/shop/new">New in</a></li><li><a href="#/shop/Outerwear">Outerwear</a></li><li><a href="#/shop/Denim">Denim</a></li></ul></div>
  <div><h4>Thrice Loved</h4><ul><li><a href="#/sustainability">Our promise</a></li><li><a href="#/sell">Sell with us</a></li></ul></div>
- <div><h4>Help</h4><ul><li><a href="#/bag">Your bag</a></li></ul></div>
+ <div><h4>Help</h4><ul><li><a href="#/bag">Your bag</a></li><li><a href="#/privacy">Privacy policy</a></li></ul></div>
  <div><h4>Join the loop</h4><p style="font-size:.92rem">New arrivals, drops and sustainability tips. No spam.</p><form onsubmit="event.preventDefault();toast('Thanks for subscribing!')"><input type="email" placeholder="you@email.com" required><button class="btn">Subscribe</button></form></div>
-</div><div class="footer__bottom"><span>&copy; 2026 Thrice Loved. Pre-loved, never wasted.</span><span>Secure checkout by Shopify</span></div></div></footer>`;
+</div><div class="footer__bottom"><span>&copy; 2026 Thrice Loved. Pre-loved, never wasted.</span><span>Test payments via PayPal sandbox &middot; <a href="#/privacy">Privacy</a></span></div></div></footer>`;
 
 const card = p => `
 <article class="card"><div class="card__badges"><span class="badge badge--${p.condition.toLowerCase().replace(/ /g,'-')}">${p.condition}</span><span class="badge badge--sale">${pct(p)}% off new</span></div>
@@ -435,6 +441,44 @@ ${cta()}
    <p class="cart__note" style="display:flex;gap:.5rem;align-items:center;margin:0"><span style="width:20px;color:var(--primary)">${icon.box}</span>Ships in recycled, plastic-free packaging.</p></div></div></div>`;
  },
 
+ privacy: () => `
+<section class="section section--tight"><div class="container prose"><span class="eyebrow">Privacy policy</span><h1>How we look after your information</h1>
+<p class="lead">Last updated 17 November 2026. We collect as little as we can, tell you what we collect, and follow the New Zealand Privacy Act 2020.</p>
+
+<h2>Who we are</h2>
+<p>Thrice Loved is a pre-loved fashion store built by a student group for the INFO714 E-Business Strategies and M-Commerce course at the Auckland Institute of Studies. It is a <strong>test store</strong>: no real goods are sold and no real money is taken.</p>
+
+<h2>What we collect, and why</h2>
+<ul>
+<li><strong>Visit data (Google Analytics 4).</strong> Pages you view, items added to the bag, whether checkout is started or completed, your device type, browser, approximate location (country or city) and how you found us. We use it to see how people use the store and to improve it. Google Analytics sets cookies whose names start with <em>_ga</em>.</li>
+<li><strong>Test payments (PayPal sandbox).</strong> When you pay, you are sent to PayPal's own test pages and log in there. We never see or store your card number or PayPal password. We only get an order number and whether the payment worked.</li>
+<li><strong>Forms.</strong> The newsletter and Sell with us forms in this version of the store do not send or save what you type. If that changes, we will update this policy before collecting anything.</li>
+<li><strong>Your bag.</strong> It is kept only in your browser and is cleared when you leave or refresh the page.</li></ul>
+
+<h2>Who we share it with</h2>
+<p>Google (analytics), PayPal (test checkout) and GitHub (which hosts the site and may log technical details such as IP addresses). We do not sell your information. These providers may store data overseas, including in the United States.</p>
+
+<h2>Keeping it safe</h2>
+<p>The store is served over HTTPS. Payments happen on PayPal's secure pages, so card details never touch our site. Only the group members and our course lecturer can see the analytics.</p>
+
+<h2>How long we keep it</h2>
+<p>Analytics data is kept only for the course assessment. When the course ends we will delete the Analytics property.</p>
+
+<h2>Your choices and rights</h2>
+<p>You can ask to see the information we hold about you, and ask us to correct it. You can block or clear cookies in your browser, or install Google's Analytics opt-out add-on. If you are unhappy with how we handled your information, you can complain to the Office of the Privacy Commissioner at <a href="https://www.privacy.org.nz" target="_blank" rel="noopener">privacy.org.nz</a>.</p>${CONTACT_EMAIL ? `<p>Questions or requests: <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></p>` : ''}
+
+<h2>How this follows the Privacy Act 2020</h2>
+<table class="ptable"><thead><tr><th>Principle</th><th>What we do</th></tr></thead><tbody>
+<tr><th>IPP 1&ndash;2<br>Collect only what is needed</th><td>We collect only visit data needed to improve the store. We do not ask for names, addresses or card details.</td></tr>
+<tr><th>IPP 3&ndash;4<br>Be open and fair</th><td>This policy and the notice at the bottom of the page explain what we collect. There is no hidden tracking.</td></tr>
+<tr><th>IPP 5<br>Security</th><td>HTTPS, payments handled by PayPal, and limited access to analytics.</td></tr>
+<tr><th>IPP 6&ndash;7<br>Access and correction</th><td>You can ask to see and correct information we hold about you.</td></tr>
+<tr><th>IPP 8&ndash;9<br>Accuracy and retention</th><td>We keep data only as long as the course needs, then delete it.</td></tr>
+<tr><th>IPP 10&ndash;11<br>Use and sharing</th><td>Used only to improve the store. Shared only with Google, PayPal and GitHub.</td></tr>
+<tr><th>IPP 12<br>Overseas sharing</th><td>We tell you that these providers may store data overseas.</td></tr>
+<tr><th>IPP 13<br>Unique identifiers</th><td>We do not create accounts or ID numbers for you.</td></tr></tbody></table>
+</div></section>`,
+
  thanks: () => `<div class="container cart"><h1>Thank you for your order</h1><div class="empty"><p class="lead" style="margin-inline:auto">Your test order <strong>${lastOrder||''}</strong> went through. Your pieces will be packed in recycled, plastic-free packaging.</p><p class="cart__note">This was a PayPal sandbox payment, so no real money was charged.</p><a class="btn" href="#/shop">Keep shopping</a></div></div>`,
 
  sustainability: () => `
@@ -457,6 +501,8 @@ function toast(msg){ const t=document.createElement('div'); t.className='toast';
 function addBag(h){ if(!bag.includes(h)){ bag.push(h); const p=byHandle(h); gtag('event','add_to_cart',{currency:'NZD',value:p.price,items:[{item_id:p.sku,item_name:p.title,price:p.price,quantity:1}]}); } render(); toast('Added to your bag'); }
 // PayPal sandbox Client ID (safe to be public; never put the Secret here):
 const PAYPAL_CLIENT_ID = 'AfYAjpfWcrwaWOp5YGD0ZfwQjTpkAShq3xdT4IBPi5Wialstejs_2SEBJwf-nvA-M60-GgH7x-G-ffc5';
+// Group contact email for privacy requests (shown on the privacy page when set):
+const CONTACT_EMAIL = '';
 let lastOrder = '', ppLoading = null;
 const bagItems = () => bag.map(byHandle);
 const bagTotal = () => bagItems().reduce((a,p)=>a+p.price,0);
@@ -500,4 +546,10 @@ function render(){
   if (v === 'bag') mountPayPal();
 }
 render(); track();
+(function(){ let seen=false; try{ seen = localStorage.getItem('tl_notice')==='1'; }catch(e){}
+  if(seen) return;
+  const n=document.createElement('div'); n.className='notice'; n.setAttribute('role','region'); n.setAttribute('aria-label','Analytics notice');
+  n.innerHTML='<p>We use Google Analytics to count visits and improve this test store. <a href="#/privacy">Privacy policy</a></p><button class="btn" type="button">OK</button>';
+  n.querySelector('button').onclick=()=>{ try{ localStorage.setItem('tl_notice','1'); }catch(e){} n.remove(); };
+  document.body.appendChild(n); })();
 </script></body></html>
